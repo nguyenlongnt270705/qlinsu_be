@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.User;
 import com.example.demo.services.UserService;
 
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -31,8 +33,10 @@ public class UserController {
     }
 
     // Create a new user
-    public String createUser() {
-        return "User created";
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User newUser = this.userService.handleCreate(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     // Update an existing user
