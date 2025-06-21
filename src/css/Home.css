@@ -1,0 +1,19 @@
+.card-btn {
+  outline-style: solid;
+  outline-color:black;
+  color: black;
+  border-radius: 30px;
+  padding: 0px 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+.box {
+    outline-style: solid;
+  outline-color:black;
+  background-color: white;
+  padding: 15px;
+  border-radius: 20px;
+  width: 200px;
+  height: 100px;
+}

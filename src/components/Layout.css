@@ -1,0 +1,57 @@
+/* src/components/Layout.css */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background-color: var(--primary-bg);
+  color: var(--text-light);
+  height: 60px;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.app-nav {
+  margin-left: 48px;
+  display: flex;
+  gap: 24px;
+}
+
+.app-nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.app-nav a.active,
+.app-nav a:hover {
+  background-color: var(--accent-color);
+}
+
+.user-profile {
+  margin-left: auto;
+}
+
+.user-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.app-content {
+  flex-grow: 1;
+  background-color: #f4f7fa;
+  padding: 24px;
+  overflow-y: auto;
+}
