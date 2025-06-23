@@ -1,15 +1,18 @@
 package com.example.demo.services;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.entities.User;
 
-@Service
-public class UserService {
+public interface UserService {
 
-    private final UserRepository userRepository;
+    List<User> fetchAllUser();
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }   
+    User handleCreate(User user);
+
+    User fetchUserById(Long id);
+
+    User updateUser(User reqUser);
+
+    void handleDelete(Long id);
 }
