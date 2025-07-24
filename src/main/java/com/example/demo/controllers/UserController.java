@@ -21,8 +21,10 @@ public class UserController {
 
     private final UserService userService;
 
+    // private final PasswordEncoder passwordEncoder;
     public UserController(UserService userService) {
         this.userService = userService;
+        // this.passwordEncoder = passwordEncoder;
     }
 
     // Get all users
@@ -41,6 +43,8 @@ public class UserController {
     // Create a new user
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        // String hashPassword = this.passwordEncoder.encode(user.getPassword());
+        // user.setPassword(hashPassword);
         User newUser = this.userService.handleCreate(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
