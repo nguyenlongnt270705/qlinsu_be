@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,10 +22,11 @@ public class UserController {
 
     private final UserService userService;
 
-    // private final PasswordEncoder passwordEncoder;
-    public UserController(UserService userService) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        // this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Get all users
@@ -43,8 +45,8 @@ public class UserController {
     // Create a new user
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        // String hashPassword = this.passwordEncoder.encode(user.getPassword());
-        // user.setPassword(hashPassword);
+        String hashPassword = this.passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashPassword);
         User newUser = this.userService.handleCreate(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
@@ -52,7 +54,7 @@ public class UserController {
     // Update an existing user
     @PatchMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updateUser = this.userService.fetchUserById(id);
+        User updateUser = this.userService.updateUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(updateUser);
     }
 

@@ -17,6 +17,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
+        // ghi đè tất cả phản hồi
         return true;
     }
 

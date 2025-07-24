@@ -50,4 +50,9 @@ public class UserServiceImpl implements UserService {
     public void handleDelete(Long id) {
         this.userRepository.deleteById(id);
     }
+
+    // Get user by username
+    public User handleGetUserByUsername(String username) {
+        return this.userRepository.findByEmail(username);
+    }
 }
