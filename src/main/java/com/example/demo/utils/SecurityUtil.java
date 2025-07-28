@@ -1,10 +1,8 @@
 // package com.example.demo.utils;
-
 // import java.time.Instant;
 // import java.time.temporal.ChronoUnit;
 // import java.util.Arrays;
 // import java.util.Optional;
-
 // import org.springframework.beans.factory.annotation.Value;
 // import org.springframework.security.core.Authentication;
 // import org.springframework.security.core.GrantedAuthority;
@@ -18,30 +16,21 @@
 // import org.springframework.security.oauth2.jwt.JwtEncoder;
 // import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 // import org.springframework.stereotype.Service;
-
 // @Service
 // public class SecurityUtil {
-
 //     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
-
 //     private final JwtEncoder jwtEncoder;
-
 //     public static final String AUTHORITIES_KEY = "auth";
-
 //     public SecurityUtil(JwtEncoder jwtEncoder) {
 //         this.jwtEncoder = jwtEncoder;
 //     }
-
 //     @Value("${hoidanit.jwt.base64-secret}")
 //     private String jwtKey;
-
 //     @Value("${hoidanit.jwt.token-validity-in-seconds}")
 //     private long jwtExpiration;
-
 //     public String createToken(Authentication authentication) {
 //         Instant now = Instant.now();
 //         Instant validity = now.plus(this.jwtExpiration, ChronoUnit.SECONDS);
-
 //         // @formatter:off
 //         JwtClaimsSet claims = JwtClaimsSet.builder()
 //                 .issuedAt(now)
@@ -49,12 +38,9 @@
 //                 .subject(authentication.getName())
 //                 .claim("hoidanit", authentication)
 //                 .build();
-
 //         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
 //         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
-
 //     }
-
 //     /**
 //      * Get the login of the current user.
 //      *
@@ -64,7 +50,6 @@
 //         SecurityContext securityContext = SecurityContextHolder.getContext();
 //         return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
 //     }
-
 //     private static String extractPrincipal(Authentication authentication) {
 //         if (authentication == null) {
 //             return null;
@@ -77,7 +62,6 @@
 //         }
 //         return null;
 //     }
-
 //     /**
 //      * Get the JWT of the current user.
 //      *
@@ -89,7 +73,6 @@
 //                 .filter(authentication -> authentication.getCredentials() instanceof String)
 //                 .map(authentication -> (String) authentication.getCredentials());
 //     }
-
 //     /**
 //      * Check if a user is authenticated.
 //      *
@@ -133,3 +116,57 @@
 //     //     return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority);
 //     // }
 // }
+package com.example.demo.utils;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
+
+import com.nimbusds.jose.util.Base64;
+
+@Service
+public class SecurityUtil {
+
+    private final JwtEncoder jwtEncoder;
+
+    public SecurityUtil(JwtEncoder jwtEncoder) {
+        this.jwtEncoder = jwtEncoder;
+    }
+    public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
+    @Value("${leo.jwt.base64-secret}")
+    private String jwtKey;
+
+    @Value("${leo.jwt.token-validity-in-seconds}")
+    private long jwtExpiration;
+
+    // This method is used to get the secret key for JWT encoding
+    private SecretKey getSecretKey() {
+        byte[] keyBytes = Base64.from(jwtKey).decode();
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length, JWT_ALGORITHM.getName());
+    }
+
+    public String createToken(Authentication authentication) {
+        Instant now = Instant.now();
+        Instant validity = now.plus(this.jwtExpiration, ChronoUnit.SECONDS);
+        // @formatter:off
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuedAt(now)
+                .expiresAt(validity)
+                .subject(authentication.getName())
+                .claim("leo", authentication)
+                .build();
+        JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+    }
+}
