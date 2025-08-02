@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,7 @@ import com.example.demo.services.UserService;
 import com.example.demo.utils.errors.IdInvalidException;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     private final UserService userService;
@@ -52,7 +54,7 @@ public class UserController {
     // Update an existing user
     @PatchMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updateUser = this.userService.fetchUserById(id);
+        User updateUser = this.userService.updateUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(updateUser);
     }
 

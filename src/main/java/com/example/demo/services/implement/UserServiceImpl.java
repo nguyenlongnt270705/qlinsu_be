@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
         if (currentUser != null) {
             currentUser.setName(reqUser.getName());
             currentUser.setEmail(reqUser.getEmail());
+            currentUser.setAge(reqUser.getAge());
+            currentUser.setGender(reqUser.getGender());
+            currentUser.setAddress(reqUser.getAddress());
+            currentUser.setRole(reqUser.getRole());
             currentUser = this.userRepository.save(currentUser);
         }
         return currentUser;
